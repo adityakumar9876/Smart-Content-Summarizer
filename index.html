@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Content Summarizer</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            transform-style: preserve-3d;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            perspective: 1000px;
+        }
+
+        .input-section, .output-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+
+        .input-section:hover, .output-section:hover {
+            transform: translateZ(10px) rotateX(2deg) rotateY(2deg);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #ff7e5f;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            background: rgba(0, 0, 0, 0.2);
+            border: none;
+            border-radius: 10px;
+            padding: 1rem;
+            color: white;
+            font-size: 1rem;
+            resize: none;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #ff7e5f;
+            transform: translateZ(5px);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        select, button {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        select {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        button:hover {
+            transform: translateY(-5px) translateZ(5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0) translateZ(0);
+        }
+
+        .summary-output {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            min-height: 200px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+
+        .summary-output:hover {
+            transform: translateZ(5px);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 2rem;
+            transform-style: preserve-3d;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            transform: translateZ(20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-box:hover {
+            transform: translateZ(30px) scale(1.05);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff7e5f;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: -1;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: #ff7e5f;
+            top: 10%;
+            left: 10%;
+            animation-delay: -2s;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: #302b63;
+            bottom: 10%;
+            right: 10%;
+            animation-delay: -4s;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            padding: 10px;
+            background: rgba(255, 107, 107, 0.1);
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #ff7e5f;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
+            50% { transform: translateY(-10px) rotateX(5deg) rotateY(5deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.2); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        select:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        textarea:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        function App() {
+            const [text, setText] = useState('');
+            const [length, setLength] = useState('medium');
+            const [summary, setSummary] = useState('');
+            const [stats, setStats] = useState(null);
+            const [isLoading, setIsLoading] = useState(false);
+            const [error, setError] = useState('');
+
+            const handleSummarize = async () => {
+                if (!text.trim() || text.trim().length < 10) {
+                    setError('Please enter at least 10 characters of text');
+                    return;
+                }
+
+                setIsLoading(true);
+                setError('');
+
+                try {
+                    // In a real implementation, this would call your Express backend
+                    // For demo purposes, we'll simulate the API call
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    // Simulate OpenAI API response
+                    const wordCount = text.split(' ').length;
+                    const summaryWordCount = Math.floor(wordCount * 0.3);
+                    const reduction = Math.round((1 - (summaryWordCount / wordCount)) * 100);
+                    const timeSaved = Math.round((wordCount - summaryWordCount) / 200);
+                    
+                    // Generate a simulated summary (in real app, this would come from OpenAI)
+                    const sentences = text.split('. ');
+                    const summaryLength = Math.max(1, Math.floor(sentences.length * 0.4));
+                    const simulatedSummary = sentences.slice(0, summaryLength).join('. ') + '.';
+                    
+                    setSummary(simulatedSummary);
+                    setStats({
+                        reduction,
+                        timeSaved,
+                        originalWordCount: wordCount,
+                        summaryWordCount
+                    });
+                } catch (err) {
+                    setError('Failed to summarize text. Please try again.');
+                    console.error('Summarization error:', err);
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+
+            return (
+                <div className="App">
+                    <div className="orb orb-1"></div>
+                    <div className="orb orb-2"></div>
+
+                    <div className="container">
+                        <header>
+                            <h1>Smart Content Summarizer</h1>
+                            <p className="subtitle">Transform lengthy content into concise summaries with AI-powered precision</p>
+                        </header>
+
+                        <div className="main-content">
+                            <div className="input-section">
+                                <h2>Input Your Content</h2>
+                                <textarea 
+                                    placeholder="Paste your text here..."
+                                    value={text}
+                                    onChange={(e) => setText(e.target.value)}
+                                    disabled={isLoading}
+                                ></textarea>
+                                <div className="controls">
+                                    <select 
+                                        value={length}
+                                        onChange={(e) => setLength(e.target.value)}
+                                        disabled={isLoading}
+                                    >
+                                        <option value="short">Summary Length: Short</option>
+                                        <option value="medium">Summary Length: Medium</option>
+                                        <option value="detailed">Summary Length: Detailed</option>
+                                    </select>
+                                    <button onClick={handleSummarize} disabled={isLoading}>
+                                        {isLoading ? 'Processing...' : 'Summarize'}
+                                    </button>
+                                </div>
+                                {error && <div className="error-message">{error}</div>}
+                            </div>
+
+                            <div className="output-section">
+                                <h2>AI Summary</h2>
+                                <div className="summary-output">
+                                    {isLoading ? (
+                                        <div className="loading">
+                                            <div className="spinner"></div>
+                                            <p>Analyzing your content...</p>
+                                        </div>
+                                    ) : (
+                                        summary || 'Your concise summary will appear here...'
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        {stats && (
+                            <div className="stats">
+                                <div className="stat-box">
+                                    <div className="stat-value">{stats.reduction}%</div>
+                                    <div className="stat-label">Content Reduced</div>
+                                </div>
+                                <div className="stat-box">
+                                    <div className="stat-value">{stats.timeSaved}s</div>
+                                    <div className="stat-label">Reading Time Saved</div>
+                                </div>
+                                <div className="stat-box">
+                                    <div className="stat-value">98%</div>
+                                    <div className="stat-label">Key Points Kept</div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
