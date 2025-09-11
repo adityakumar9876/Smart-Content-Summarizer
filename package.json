@@ -1,88 +1,71 @@
 {
-  "name": "postcss",
-  "version": "8.5.6",
-  "description": "Tool for transforming styles with JS plugins",
+  "name": "source-map-js",
+  "description": "Generates and consumes source maps",
+  "version": "1.2.1",
+  "homepage": "https://github.com/7rulnik/source-map-js",
+  "author": "Valentin 7rulnik Semirulnik <v7rulnik@gmail.com>",
+  "contributors": [
+    "Nick Fitzgerald <nfitzgerald@mozilla.com>",
+    "Tobias Koppers <tobias.koppers@googlemail.com>",
+    "Duncan Beevers <duncan@dweebd.com>",
+    "Stephen Crane <scrane@mozilla.com>",
+    "Ryan Seddon <seddon.ryan@gmail.com>",
+    "Miles Elam <miles.elam@deem.com>",
+    "Mihai Bazon <mihai.bazon@gmail.com>",
+    "Michael Ficarra <github.public.email@michael.ficarra.me>",
+    "Todd Wolfson <todd@twolfson.com>",
+    "Alexander Solovyov <alexander@solovyov.net>",
+    "Felix Gnass <fgnass@gmail.com>",
+    "Conrad Irwin <conrad.irwin@gmail.com>",
+    "usrbincc <usrbincc@yahoo.com>",
+    "David Glasser <glasser@davidglasser.net>",
+    "Chase Douglas <chase@newrelic.com>",
+    "Evan Wallace <evan.exe@gmail.com>",
+    "Heather Arthur <fayearthur@gmail.com>",
+    "Hugh Kennedy <hughskennedy@gmail.com>",
+    "David Glasser <glasser@davidglasser.net>",
+    "Simon Lydell <simon.lydell@gmail.com>",
+    "Jmeas Smith <jellyes2@gmail.com>",
+    "Michael Z Goddard <mzgoddard@gmail.com>",
+    "azu <azu@users.noreply.github.com>",
+    "John Gozde <john@gozde.ca>",
+    "Adam Kirkton <akirkton@truefitinnovation.com>",
+    "Chris Montgomery <christopher.montgomery@dowjones.com>",
+    "J. Ryan Stinnett <jryans@gmail.com>",
+    "Jack Herrington <jherrington@walmartlabs.com>",
+    "Chris Truter <jeffpalentine@gmail.com>",
+    "Daniel Espeset <daniel@danielespeset.com>",
+    "Jamie Wong <jamie.lf.wong@gmail.com>",
+    "Eddy Bruël <ejpbruel@mozilla.com>",
+    "Hawken Rives <hawkrives@gmail.com>",
+    "Gilad Peleg <giladp007@gmail.com>",
+    "djchie <djchie.dev@gmail.com>",
+    "Gary Ye <garysye@gmail.com>",
+    "Nicolas Lalevée <nicolas.lalevee@hibnet.org>"
+  ],
+  "repository": "7rulnik/source-map-js",
+  "main": "./source-map.js",
+  "files": [
+    "source-map.js",
+    "source-map.d.ts",
+    "lib/"
+  ],
   "engines": {
-    "node": "^10 || ^12 || >=14"
+    "node": ">=0.10.0"
   },
-  "exports": {
-    ".": {
-      "import": "./lib/postcss.mjs",
-      "require": "./lib/postcss.js"
-    },
-    "./lib/at-rule": "./lib/at-rule.js",
-    "./lib/comment": "./lib/comment.js",
-    "./lib/container": "./lib/container.js",
-    "./lib/css-syntax-error": "./lib/css-syntax-error.js",
-    "./lib/declaration": "./lib/declaration.js",
-    "./lib/fromJSON": "./lib/fromJSON.js",
-    "./lib/input": "./lib/input.js",
-    "./lib/lazy-result": "./lib/lazy-result.js",
-    "./lib/no-work-result": "./lib/no-work-result.js",
-    "./lib/list": "./lib/list.js",
-    "./lib/map-generator": "./lib/map-generator.js",
-    "./lib/node": "./lib/node.js",
-    "./lib/parse": "./lib/parse.js",
-    "./lib/parser": "./lib/parser.js",
-    "./lib/postcss": "./lib/postcss.js",
-    "./lib/previous-map": "./lib/previous-map.js",
-    "./lib/processor": "./lib/processor.js",
-    "./lib/result": "./lib/result.js",
-    "./lib/root": "./lib/root.js",
-    "./lib/rule": "./lib/rule.js",
-    "./lib/stringifier": "./lib/stringifier.js",
-    "./lib/stringify": "./lib/stringify.js",
-    "./lib/symbols": "./lib/symbols.js",
-    "./lib/terminal-highlight": "./lib/terminal-highlight.js",
-    "./lib/tokenize": "./lib/tokenize.js",
-    "./lib/warn-once": "./lib/warn-once.js",
-    "./lib/warning": "./lib/warning.js",
-    "./package.json": "./package.json"
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "test": "npm run build && node test/run-tests.js",
+    "build": "webpack --color",
+    "toc": "doctoc --title '## Table of Contents' README.md && doctoc --title '## Table of Contents' CONTRIBUTING.md"
   },
-  "main": "./lib/postcss.js",
-  "types": "./lib/postcss.d.ts",
-  "keywords": [
-    "css",
-    "postcss",
-    "rework",
-    "preprocessor",
-    "parser",
-    "source map",
-    "transform",
-    "manipulation",
-    "transpiler"
-  ],
-  "funding": [
-    {
-      "type": "opencollective",
-      "url": "https://opencollective.com/postcss/"
-    },
-    {
-      "type": "tidelift",
-      "url": "https://tidelift.com/funding/github/npm/postcss"
-    },
-    {
-      "type": "github",
-      "url": "https://github.com/sponsors/ai"
-    }
-  ],
-  "author": "Andrey Sitnik <andrey@sitnik.ru>",
-  "license": "MIT",
-  "homepage": "https://postcss.org/",
-  "repository": "postcss/postcss",
-  "bugs": {
-    "url": "https://github.com/postcss/postcss/issues"
+  "devDependencies": {
+    "clean-publish": "^3.1.0",
+    "doctoc": "^0.15.0",
+    "webpack": "^1.12.0"
   },
-  "dependencies": {
-    "nanoid": "^3.3.11",
-    "picocolors": "^1.1.1",
-    "source-map-js": "^1.2.1"
+  "clean-publish": {
+    "cleanDocs": true
   },
-  "browser": {
-    "./lib/terminal-highlight": false,
-    "source-map-js": false,
-    "path": false,
-    "url": false,
-    "fs": false
-  }
+  "typings": "source-map.d.ts"
 }
