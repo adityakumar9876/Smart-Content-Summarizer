@@ -1,83 +1,88 @@
 {
-  "name": "picomatch",
-  "description": "Blazing fast and accurate glob matcher written in JavaScript, with no dependencies and full support for standard and extended Bash glob features, including braces, extglobs, POSIX brackets, and regular expressions.",
-  "version": "4.0.3",
-  "homepage": "https://github.com/micromatch/picomatch",
-  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
-  "funding": "https://github.com/sponsors/jonschlinkert",
-  "repository": "micromatch/picomatch",
-  "bugs": {
-    "url": "https://github.com/micromatch/picomatch/issues"
-  },
-  "license": "MIT",
-  "files": [
-    "index.js",
-    "posix.js",
-    "lib"
-  ],
-  "sideEffects": false,
-  "main": "index.js",
+  "name": "postcss",
+  "version": "8.5.6",
+  "description": "Tool for transforming styles with JS plugins",
   "engines": {
-    "node": ">=12"
+    "node": "^10 || ^12 || >=14"
   },
-  "scripts": {
-    "lint": "eslint --cache --cache-location node_modules/.cache/.eslintcache --report-unused-disable-directives --ignore-path .gitignore .",
-    "mocha": "mocha --reporter dot",
-    "test": "npm run lint && npm run mocha",
-    "test:ci": "npm run test:cover",
-    "test:cover": "nyc npm run mocha"
+  "exports": {
+    ".": {
+      "import": "./lib/postcss.mjs",
+      "require": "./lib/postcss.js"
+    },
+    "./lib/at-rule": "./lib/at-rule.js",
+    "./lib/comment": "./lib/comment.js",
+    "./lib/container": "./lib/container.js",
+    "./lib/css-syntax-error": "./lib/css-syntax-error.js",
+    "./lib/declaration": "./lib/declaration.js",
+    "./lib/fromJSON": "./lib/fromJSON.js",
+    "./lib/input": "./lib/input.js",
+    "./lib/lazy-result": "./lib/lazy-result.js",
+    "./lib/no-work-result": "./lib/no-work-result.js",
+    "./lib/list": "./lib/list.js",
+    "./lib/map-generator": "./lib/map-generator.js",
+    "./lib/node": "./lib/node.js",
+    "./lib/parse": "./lib/parse.js",
+    "./lib/parser": "./lib/parser.js",
+    "./lib/postcss": "./lib/postcss.js",
+    "./lib/previous-map": "./lib/previous-map.js",
+    "./lib/processor": "./lib/processor.js",
+    "./lib/result": "./lib/result.js",
+    "./lib/root": "./lib/root.js",
+    "./lib/rule": "./lib/rule.js",
+    "./lib/stringifier": "./lib/stringifier.js",
+    "./lib/stringify": "./lib/stringify.js",
+    "./lib/symbols": "./lib/symbols.js",
+    "./lib/terminal-highlight": "./lib/terminal-highlight.js",
+    "./lib/tokenize": "./lib/tokenize.js",
+    "./lib/warn-once": "./lib/warn-once.js",
+    "./lib/warning": "./lib/warning.js",
+    "./package.json": "./package.json"
   },
-  "devDependencies": {
-    "eslint": "^8.57.0",
-    "fill-range": "^7.0.1",
-    "gulp-format-md": "^2.0.0",
-    "mocha": "^10.4.0",
-    "nyc": "^15.1.0",
-    "time-require": "github:jonschlinkert/time-require"
-  },
+  "main": "./lib/postcss.js",
+  "types": "./lib/postcss.d.ts",
   "keywords": [
-    "glob",
-    "match",
-    "picomatch"
+    "css",
+    "postcss",
+    "rework",
+    "preprocessor",
+    "parser",
+    "source map",
+    "transform",
+    "manipulation",
+    "transpiler"
   ],
-  "nyc": {
-    "reporter": [
-      "html",
-      "lcov",
-      "text-summary"
-    ]
+  "funding": [
+    {
+      "type": "opencollective",
+      "url": "https://opencollective.com/postcss/"
+    },
+    {
+      "type": "tidelift",
+      "url": "https://tidelift.com/funding/github/npm/postcss"
+    },
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/ai"
+    }
+  ],
+  "author": "Andrey Sitnik <andrey@sitnik.ru>",
+  "license": "MIT",
+  "homepage": "https://postcss.org/",
+  "repository": "postcss/postcss",
+  "bugs": {
+    "url": "https://github.com/postcss/postcss/issues"
   },
-  "verb": {
-    "toc": {
-      "render": true,
-      "method": "preWrite",
-      "maxdepth": 3
-    },
-    "layout": "empty",
-    "tasks": [
-      "readme"
-    ],
-    "plugins": [
-      "gulp-format-md"
-    ],
-    "lint": {
-      "reflinks": true
-    },
-    "related": {
-      "list": [
-        "braces",
-        "micromatch"
-      ]
-    },
-    "reflinks": [
-      "braces",
-      "expand-brackets",
-      "extglob",
-      "fill-range",
-      "micromatch",
-      "minimatch",
-      "nanomatch",
-      "picomatch"
-    ]
+  "dependencies": {
+    "nanoid": "^3.3.11",
+    "picocolors": "^1.1.1",
+    "source-map-js": "^1.2.1"
+  },
+  "browser": {
+    "./lib/terminal-highlight": false,
+    "source-map-js": false,
+    "path": false,
+    "url": false,
+    "fs": false
   }
 }
